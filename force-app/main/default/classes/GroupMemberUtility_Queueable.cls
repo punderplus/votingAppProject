@@ -1,6 +1,13 @@
 public with sharing class GroupMemberUtility_Queueable implements Queueable {
-    private List<Group> newGroups;
+    /**
+     * queueable class which implements asynchronous jobs for GroupMember object
+     */ 
 
+    private List<Group> newGroups;
+    /**
+     * @description constructor 
+     * @param  newGroups - list of groups related to Voting Campaign object
+     */ 
     public GroupMemberUtility_Queueable(List<Group> newGroups){
         this.newGroups = newGroups;
     }
@@ -15,6 +22,18 @@ public with sharing class GroupMemberUtility_Queueable implements Queueable {
                 gms.add(new GroupMember(GroupId=newGroup.Id, UserOrGroupId=UserInfo.GetUserId()));
             }
         }
-        insert gms;
+        //dmlexception handler and sending message to creator email
+        try{
+            insert gms;
+        }catch(DmlException error){
+            //System.debug('Error handled');
+            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+            String[] address = new String[] {UserInfo.getUserEmail()};
+            mail.setToAddresses(address);
+            mail.setSenderDisplayName('Voting App support');
+            mail.setSubject('Problem occured while data manipulation');
+            mail.setPlainTextBody('Insert is not commited due to DmlException error: ' + error.getMessage());
+            Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+        }
     }
 }

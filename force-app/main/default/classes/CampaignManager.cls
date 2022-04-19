@@ -1,10 +1,16 @@
 public with sharing class CampaignManager{
     /**
+     * contains methods for triggers on Voting Campaign object
+     */ 
+    
+    /**
      * @description creates public groups for any campaign inserted
      * @param  addedCampaigns list of inserted campaigns
      */ 
     public static void createGroups(List<Voting_Campaign__c> addedCampaigns){
+        //list of roles
         String[] types = new String[]{'-CONFG', '-VOTER', '-MODER', '-ANLTC'};
+        //adding groups
         List<Group> groups = new List<Group>();
         for(Voting_Campaign__c vc: addedCampaigns){
             for(String s: types){
@@ -27,7 +33,6 @@ public with sharing class CampaignManager{
         for(Voting_Campaign__c vc: deletedCampaigns){
             filters.add('%' + vc.Voting_Campaign_Number__c + '%');
         }
-        List<Group> groupsToDelete = [SELECT ID, OwnerId, Name FROM Group WHERE Name LIKE :filters];
-        delete groupsToDelete;
+        delete [SELECT ID, OwnerId, Name FROM Group WHERE Name LIKE :filters];
     }  
 }
