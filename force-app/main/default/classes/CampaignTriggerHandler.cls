@@ -1,8 +1,7 @@
+/**
+ * handling functionality to call on different actions on Voting Campaign object 
+ */ 
 public with sharing class CampaignTriggerHandler extends CustomMDTTriggerHandler{
-    /**
-     * handling functionality to call on different actions on Voting Campaign object 
-     */ 
-    
     public List<Voting_Campaign__c> newCampaigns = new List<Voting_Campaign__c>();
     public List<Voting_Campaign__c> oldCampaigns = new List<Voting_Campaign__c>();
     /**

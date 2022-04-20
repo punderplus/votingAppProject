@@ -1,7 +1,7 @@
+/**
+ * queueable class which implements asynchronous jobs for GroupMember object
+ */ 
 public with sharing class GroupMemberUtility_Queueable implements Queueable {
-    /**
-     * queueable class which implements asynchronous jobs for GroupMember object
-     */ 
 
     private List<Group> newGroups;
     /**

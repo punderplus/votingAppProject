@@ -1,8 +1,8 @@
+/**
+ * contains methods for triggers on Voting Campaign object
+ */ 
 public with sharing class CampaignManager{
-    /**
-     * contains methods for triggers on Voting Campaign object
-     */ 
-    
+
     /**
      * @description creates public groups for any campaign inserted
      * @param  addedCampaigns list of inserted campaigns
