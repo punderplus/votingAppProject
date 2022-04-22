@@ -1,5 +1,11 @@
+/**
+ * Test for queueable class related to GroupMember object
+ */ 
 @isTest
 public with sharing class GroupMemberUtility_QueueableTest {
+    /**
+     * @description setup description
+     */ 
     @TestSetup
     static void setup(){
         //creating and inserting initial list of cmps
@@ -29,6 +35,7 @@ public with sharing class GroupMemberUtility_QueueableTest {
         for(Group g: newGroups){
             newGroupsId.add(g.ID);
         }
+        //should be 50 group members for 50 configurators groups
         Integer actual = [SELECT count() FROM GroupMember WHERE GroupId in :newGroupsId];
         System.assertEquals(50, actual);
     }

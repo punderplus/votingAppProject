@@ -14,7 +14,9 @@ public with sharing class CampaignManagerTest {
         for(Integer i = 0; i < 50; i++){
             cmps.add(new Voting_Campaign__c(Name='Test' + i));
         }
+        Test.startTest();
         insert cmps;
+        Test.stopTest();
     }
 
     /**
@@ -50,9 +52,9 @@ public with sharing class CampaignManagerTest {
             filters.add('%' + vc.Voting_Campaign_Number__c + '%');
         }
         //deleting cmps
-        //delete initialCmps;
+        delete initialCmps;
         //count() should return zero due to zero number of groups
-        //Integer actual = [SELECT count() FROM Group WHERE Name LIKE :filters];
-        System.assertEquals(0,  0);
+        Integer actual = [SELECT count() FROM Group WHERE Name LIKE :filters];
+        System.assertEquals(0,  actual);
     }
 }
