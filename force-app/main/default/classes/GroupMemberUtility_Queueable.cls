@@ -26,14 +26,9 @@ public with sharing class GroupMemberUtility_Queueable implements Queueable {
         try{
             insert gms;
         }catch(DmlException error){
-            //System.debug('Error handled');
-            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-            String[] address = new String[] {UserInfo.getUserEmail()};
-            mail.setToAddresses(address);
-            mail.setSenderDisplayName('Voting App support');
-            mail.setSubject('Problem occured while data manipulation');
-            mail.setPlainTextBody('Insert is not commited due to DmlException error: ' + error.getMessage());
-            Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+            //error handled through exception utility class(email to admin and user who made insert)
+            ExceptionUtility eu = new ExceptionUtility(error);
+            System.enqueueJob(eu);
         }
     }
 }
