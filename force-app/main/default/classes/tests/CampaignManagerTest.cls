@@ -10,7 +10,7 @@ public with sharing class CampaignManagerTest {
     static void setup(){
         //creating and inserting initial list of cmps
         List<Voting_Campaign__c> cmps = new List<Voting_Campaign__c>();
-        //50 items to check bulk insert
+        //50 items to check bulk insert(i could have choosen any number. just testing bulk insert)
         for(Integer i = 0; i < 50; i++){
             cmps.add(new Voting_Campaign__c(Name='Test' + i));
         }
@@ -29,7 +29,7 @@ public with sharing class CampaignManagerTest {
             cmpsIds.add(cmp.Id);
         }
         //getting filters 
-        String[] filters = new String[]{};
+        List<String> filters = new List<String>();
         for(Voting_Campaign__c vc: [select id, Voting_Campaign_Number__c from Voting_Campaign__c where id in :cmpsIds]){
             filters.add('%' + vc.Voting_Campaign_Number__c + '%');
         }
@@ -38,6 +38,9 @@ public with sharing class CampaignManagerTest {
         System.assertEquals(200,  actual);
     }
     
+    /**
+     * @description testing deletion of groups while voting campaign is being deleted
+     */ 
     @isTest static void deleteGroupsTest(){
         //creating list of ids of cmps
         List<Id> cmpsIds = new List<Id>();
@@ -47,7 +50,7 @@ public with sharing class CampaignManagerTest {
             cmpsIds.add(cmp.Id);
         }
         //getting filters 
-        String[] filters = new String[]{};
+        List<String> filters = new List<String>();
         for(Voting_Campaign__c vc: [select id, Voting_Campaign_Number__c from Voting_Campaign__c where id in :cmpsIds]){
             filters.add('%' + vc.Voting_Campaign_Number__c + '%');
         }

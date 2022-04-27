@@ -16,7 +16,9 @@ public with sharing class GroupMemberUtility_QueueableTest {
         }
         insert cmps;
     }
-    
+    /**
+     * @description testing if creator of Voting Campaign object is assigned to every configurators group related to this object 
+     */ 
     @isTest
     static void confAssignmentTest(){
         //creating list of ids of cmps
@@ -25,7 +27,7 @@ public with sharing class GroupMemberUtility_QueueableTest {
             cmpsIds.add(cmp.Id);
         }
         //getting filters 
-        String[] filters = new String[]{};
+        List<String> filters = new List<String>();
         for(Voting_Campaign__c vc: [select id, Voting_Campaign_Number__c from Voting_Campaign__c where id in :cmpsIds]){
             filters.add('%' + vc.Voting_Campaign_Number__c + '%');
         }

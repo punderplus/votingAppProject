@@ -24,6 +24,7 @@ public with sharing class LocationTriggerHandler extends CustomMDTTriggerHandler
      * Invokes method to get coords by address
      */ 
     public override void afterInsert(){
-        LocationCallout.addCoords(newLocations);
+        LocationUtility_Queueable coordsCreator = new LocationUtility_Queueable(newLocations);
+        System.enqueueJob(coordsCreator);
     }
 }

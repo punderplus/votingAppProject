@@ -29,7 +29,7 @@ public with sharing class CampaignManager{
      * @param  deletedCampaigns list of deleted campaigns
      */ 
     public static void deleteGroups(List<Voting_Campaign__c> deletedCampaigns){
-        String[] filters = new String[]{};
+        List<String> filters = new List<String>();
         for(Voting_Campaign__c vc: deletedCampaigns){
             filters.add('%' + vc.Voting_Campaign_Number__c + '%');
         }
