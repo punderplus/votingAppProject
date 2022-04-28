@@ -7,7 +7,7 @@ public with sharing class LocationCallout {
      * @param  input location without coords
      * @return return location with coords
      */ 
-    public Voting_Location__c MakePostCallout(Voting_Location__c loc){
+    public Voting_Location__c makeGetCallout(Voting_Location__c loc){
         //http request
         Http http = new Http();
         HttpRequest request = new HttpRequest();

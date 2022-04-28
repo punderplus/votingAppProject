@@ -20,7 +20,7 @@ public with sharing class LocationUtility_Queueable implements Queueable, Databa
         List<Voting_Location__c> locations = new List<Voting_Location__c>();
         for(Voting_Location__c location: newLocations){
             Voting_Location__c updatedLocation = location.clone(true, false, false, false);
-            updatedLocation = coordinator.MakePostCallout(updatedLocation);
+            updatedLocation = coordinator.makeGetCallout(updatedLocation);
             locations.add(updatedLocation);
         }
         //dmlexception handler and sending message to creator email
