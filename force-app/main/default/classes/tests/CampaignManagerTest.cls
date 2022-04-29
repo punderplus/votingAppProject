@@ -24,10 +24,7 @@ public with sharing class CampaignManagerTest {
      */
     @isTest static void createGroupsTest() {
         //creating list of ids of cmps
-        List<Id> cmpsIds = new List<Id>();
-        for (Voting_Campaign__c cmp: [SELECT Id FROM Voting_Campaign__c WHERE Name LIKE 'Test%']){
-            cmpsIds.add(cmp.Id);
-        }
+        Set<ID> cmpsIds = (new Map<ID, SObject>([SELECT Id FROM Voting_Campaign__c WHERE Name LIKE 'Test%']).keySet());
         //getting filters 
         List<String> filters = new List<String>();
         for(Voting_Campaign__c vc: [select id, Voting_Campaign_Number__c from Voting_Campaign__c where id in :cmpsIds]){
@@ -43,12 +40,8 @@ public with sharing class CampaignManagerTest {
      */ 
     @isTest static void deleteGroupsTest(){
         //creating list of ids of cmps
-        List<Id> cmpsIds = new List<Id>();
         List<Voting_Campaign__c> initialCmps = [SELECT Id FROM Voting_Campaign__c WHERE Name LIKE 'Test%'];
-        System.debug(initialCmps);
-        for (Voting_Campaign__c cmp: initialCmps){
-            cmpsIds.add(cmp.Id);
-        }
+        Set<ID> cmpsIds = (new Map<ID, SObject>(initialCmps).keySet());
         //getting filters 
         List<String> filters = new List<String>();
         for(Voting_Campaign__c vc: [select id, Voting_Campaign_Number__c from Voting_Campaign__c where id in :cmpsIds]){
