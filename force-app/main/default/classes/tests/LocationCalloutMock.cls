@@ -1,3 +1,6 @@
+/**
+ * class for mocking response for Location Callout class using HttpCalloutMock interface
+ */ 
 @isTest
 global class LocationCalloutMock implements HttpCalloutMock {
     // Implement this interface method

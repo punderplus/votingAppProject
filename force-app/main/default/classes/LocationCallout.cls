@@ -21,12 +21,12 @@ public with sharing class LocationCallout {
         if(response.getStatusCode() == 200){
             Map<String, Object> results = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
             List<Object> all = (List<Object>)results.get('results');
-            Map<String, Object> annotations = (Map<String, Object>)all[0];
-            Map<String, Object> coordList = (Map<String, Object>)annotations.get('annotations');
-            Map<String, Object> dms = (Map<String, Object>)coordList.get('DMS');
-            System.debug(dms);
-            loc.Latitude__c = (String)dms.get('lat');
-            loc.Longitude__c = (String)dms.get('lng');
+            Map<String, Object> allMap = (Map<String, Object>)all[0];
+            Map<String, Object> coordList = (Map<String, Object>)allMap.get('bounds');
+            Map<String, Object> northEastCoords = (Map<String, Object>)coordList.get('northeast');
+            System.debug(northEastCoords);
+            loc.Latitude__c = String.valueOf(northEastCoords.get('lat'));
+            loc.Longitude__c = String.valueOf(northEastCoords.get('lng'));
         }
         return loc;
     }
