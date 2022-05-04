@@ -5,13 +5,14 @@ public with sharing class LocationTriggerHandler extends CustomMDTTriggerHandler
     /**
      * @description new list of locations
      */ 
-    public List<Voting_Location__c> newLocations = new List<Voting_Location__c>();
+    public List<Voting_Location__c> locationsNew = new List<Voting_Location__c>();
+
     /**
      * @description constuctor with arguements
      * @param  list of new locations
      */ 
-    public LocationTriggerHandler(List<Voting_Location__c> newLocations){
-        this.newLocations = newLocations;
+    public LocationTriggerHandler(List<Voting_Location__c> locationsNew){
+        this.locationsNew = locationsNew;
     }
     /**
      * @description consturctor withour arguements
@@ -24,7 +25,8 @@ public with sharing class LocationTriggerHandler extends CustomMDTTriggerHandler
      * Invokes method to get coords by address
      */ 
     public override void afterInsert(){
-        LocationUtility_Queueable coordsCreator = new LocationUtility_Queueable(newLocations);
+        LocationUtility_Queueable coordsCreator = new LocationUtility_Queueable(locationsNew);
         System.enqueueJob(coordsCreator);
     }
+    
 }
