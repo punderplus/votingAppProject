@@ -2,7 +2,6 @@
  * queueable class which implements asynchronous jobs for Voting Location object
  */ 
 public with sharing class LocationUtility_Queueable implements Queueable, Database.AllowsCallouts {
-
     private List<Voting_Location__c> newLocations;
     /**
      * @description constructor 
