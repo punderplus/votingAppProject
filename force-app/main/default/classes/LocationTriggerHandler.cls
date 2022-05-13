@@ -11,8 +11,8 @@ public with sharing class LocationTriggerHandler extends CustomMDTTriggerHandler
      * @description constuctor with arguements
      * @param  list of new locations
      */ 
-    public LocationTriggerHandler(List<Voting_Location__c> locationsNew){
-        this.locationsNew = locationsNew;
+    public LocationTriggerHandler(List<Voting_Location__c> locationsList){
+        this.locationsNew = locationsList;
     }
     /**
      * @description consturctor withour arguements
