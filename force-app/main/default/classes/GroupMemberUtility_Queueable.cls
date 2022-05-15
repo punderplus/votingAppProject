@@ -22,7 +22,8 @@ public with sharing class GroupMemberUtility_Queueable implements Queueable {
                 gms.add(new GroupMember(GroupId=newGroup.Id, UserOrGroupId=UserInfo.GetUserId()));
             }
         }
-        //dmlexception handler and sending message to creator email
+        /*List<Voting_Campaign_Role__c> roles = new List<Voting_Campaign_Role__c>();
+*/
         try{
             insert gms;
         }catch(DmlException error){

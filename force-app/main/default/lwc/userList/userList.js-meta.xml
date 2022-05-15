@@ -5,4 +5,10 @@
     <targets>
         <target>lightning__RecordPage</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="componentLabel" type="String" />
+            <property name="editable" type="Boolean" />
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>
