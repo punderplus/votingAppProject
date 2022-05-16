@@ -18,7 +18,9 @@ public with sharing class CampaignManager {
               groups.add(new Group(Name = 'CMP-' + vc.Voting_Campaign_Number__c + s));
             }
         }
+        //inserting roles objects
         insert roles;
+        //inserting public groups
         insert groups;
         //Adding group creator as a configurator using Queueable class
         GroupMemberUtility_Queueable addConfigurator = new GroupMemberUtility_Queueable(
@@ -26,7 +28,11 @@ public with sharing class CampaignManager {
         );
         System.enqueueJob(addConfigurator);
     }
-    
+    /**
+     * @description adds role object
+     * @param  campaign for master-detail field
+     * @return    return Role object
+     */ 
     public static Voting_Campaign_Role__c addRoleObject(Voting_Campaign__c vc){
         Voting_Campaign_Role__c role = new Voting_Campaign_Role__c();
         role.RecordTypeId = Schema.SObjectType.Voting_Campaign_Role__c.getRecordTypeInfosByName().get('Configurator').getRecordTypeId();
@@ -45,7 +51,9 @@ public with sharing class CampaignManager {
         for (Voting_Campaign__c vc : deletedCampaigns) {
             filters.add('%' + vc.Voting_Campaign_Number__c + '%');
         }
+        //deleting groups connected to campaign
         delete [SELECT ID, OwnerId, Name FROM Group WHERE Name LIKE :filters];
+        //deleting Role objects connected to campaign
         delete [SELECT Id FROM Voting_Campaign_Role__c WHERE Voting_Compaign__c IN :deletedCampaignsIds];
     }
 }
