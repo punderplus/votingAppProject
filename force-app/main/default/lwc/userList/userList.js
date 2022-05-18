@@ -2,6 +2,7 @@ import { LightningElement, track, api, wire } from 'lwc';
 import getUsers from '@salesforce/apex/CampaignController.getUsers';
 import getAllAvailableUsers from '@salesforce/apex/UsersToEditController.getAllAvailableUsers';
 import getCurrentUsers from '@salesforce/apex/UsersToEditController.getCurrentUsers';
+import insertUsers from '@salesforce/apex/UsersToEditController.insertUsers';
 
 //columns for the table
 const COLUMNS = [
@@ -67,6 +68,7 @@ export default class ModeratorsList extends LightningElement {
     }
     @track options = [];
     @track values = [];
+    updatedValues;
     //filling in options list
     @wire(getAllAvailableUsers, { cmpId: '$recordId', recordTp: '$recordTp' })
     wiredUsers({ error, data }) {
@@ -91,14 +93,28 @@ export default class ModeratorsList extends LightningElement {
     //detects if edit window is open
     @track isEditOpen = false;
 
+    handleChange(event) {
+        const selectedOpts = event.detail.value;
+        this.updatedValues = selectedOpts;
+    }
+
     openEdit() {
         this.isEditOpen = true;
     }
+
     closeEdit() {
         this.isEditOpen = false;
     }
+
     submitEdit() {
+        insertUsers({ cmpId: this.recordId, recordTp: this.recordTp, oldIds: this.values, newIds: this.updatedValues })
+            .then(() => {
+                console.log('Ok');
+            }
+            ).catch(error => {
+                console.log(error);
+            }
+            );
         this.isEditOpen = false;
     }
-
 }

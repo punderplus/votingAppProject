@@ -56,4 +56,38 @@ public class UsersToEditController {
                     AND DeveloperName IN (:recordTp))
         ];
     }
+
+    @AuraEnabled
+    public static void insertUsers(Id cmpId, String recordTp, List<Id> oldIds, List<Id> newIds){
+        //get old set of users and new set of users
+        Set<User> oldUsers = new Set<User>([SELECT Id, Name FROM User WHERE Id IN :oldIds]);
+        Set<User> newUsers = new Set<User>([SELECT Id, Name FROM User WHERE Id IN :newIds]);
+        //get set of all deleted and added users
+        Set<User> allUsers = oldUsers.clone();
+        allUsers.addAll(newUsers);
+        //get set of users to be deleted
+        Set<User> usersToDelete = allUsers.clone();
+        usersToDelete.removeAll(newUsers);
+        //get set of users to be added
+        Set<User> usersToAdd = allUsers.clone();
+        usersToAdd.removeAll(oldUsers);
+        //getting Ids of users to delete/to add
+
+        List<Voting_Campaign_Role__c> usersToAddRoles = new List<Voting_Campaign_Role__c>();
+        for(User user: usersToAdd){
+            Voting_Campaign_Role__c role = new Voting_Campaign_Role__c();
+            role.RecordTypeId = Schema.SObjectType.Voting_Campaign_Role__c.getRecordTypeInfosByName().get(recordTp).getRecordTypeId();
+            role.User__c = user.Id;
+            role.Voting_Compaign__c = cmpID;
+            usersToAddRoles.add(role);
+        }
+        //inserting new
+        insert usersToAddRoles;
+        //deleting old
+        Set<Id> usersToDeleteIds = (new Map<Id, User>(new List<User>(usersToDelete))).keyset();
+        delete [SELECT Id, User__c, Voting_Compaign__c
+                FROM Voting_Campaign_Role__c 
+                WHERE Voting_Compaign__c = :cmpID 
+                AND User__c IN :usersToDeleteIds];
+    }
 }
