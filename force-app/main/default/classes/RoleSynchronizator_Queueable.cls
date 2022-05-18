@@ -1,12 +1,20 @@
+/**
+ * Queueable class for asynchronous insert of GroupMember objects for Role Trigger
+ */ 
 public with sharing class RoleSynchronizator_Queueable implements Queueable{
+    //List of new Role objects
     private List<Voting_Campaign_Role__c> newRoles;
     /**
      * @description constructor 
-     * @param  newGroups - list of groups related to Voting Location object
+     * @param  newRoles - list of Role objects
      */ 
     public RoleSynchronizator_Queueable(List<Voting_Campaign_Role__c> newR){
         this.newRoles = newR;
     }
+    /**
+     * @description inserting group members
+     * @param  context QueueableContext object
+     */ 
     public void execute(QueueableContext context){
         Voting_Campaign_Role__c infoRole = newRoles[0].clone();
         RoleManager rm = new RoleManager();
@@ -20,5 +28,6 @@ public with sharing class RoleSynchronizator_Queueable implements Queueable{
         }
         //System.debug(gms);
         insert gms;
+        System.enqueueJob(new CampaignSharing_Queueable(newRoles));
     }
 }

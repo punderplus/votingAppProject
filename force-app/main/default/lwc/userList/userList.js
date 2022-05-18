@@ -39,7 +39,7 @@ export default class ModeratorsList extends LightningElement {
     //recordType name
     recordTp;
     connectedCallback() {
-        getUsers({ cmpId: this.recordId, lim: 5, userType: this.componentLabel }).then(response => {
+        getUsers({ cmpId: this.recordId, lim: 10, userType: this.componentLabel }).then(response => {
             //different table lable for different componentLabel arguement
             if (this.componentLabel === "MODER") {
                 this.listName = "Moderators";
@@ -92,29 +92,41 @@ export default class ModeratorsList extends LightningElement {
     }
     //detects if edit window is open
     @track isEditOpen = false;
-
+    //dual box 
     handleChange(event) {
         const selectedOpts = event.detail.value;
         this.updatedValues = selectedOpts;
     }
 
     openEdit() {
+        //open dual box
         this.isEditOpen = true;
     }
 
     closeEdit() {
+        //close dual box
         this.isEditOpen = false;
     }
 
     submitEdit() {
+        //handling inserted/deleted users in database
         insertUsers({ cmpId: this.recordId, recordTp: this.recordTp, oldIds: this.values, newIds: this.updatedValues })
             .then(() => {
-                console.log('Ok');
+                getUsers({ cmpId: this.recordId, lim: 5, userType: this.componentLabel })
+                    .then(response => {
+                        this.users = response;
+                        this.users.forEach(item => {
+                            item.UserURL = '/' + item.Id;
+                        });
+                    }).catch(error => {
+                        console.log('Error: ' + error);
+                    });
             }
             ).catch(error => {
                 console.log(error);
             }
             );
+        //close dual box
         this.isEditOpen = false;
     }
 }

@@ -23,10 +23,6 @@ public with sharing class CampaignManager {
         //inserting public groups
         insert groups;
         //Adding group creator as a configurator using Queueable class
-        GroupMemberUtility_Queueable addConfigurator = new GroupMemberUtility_Queueable(
-            groups
-        );
-        System.enqueueJob(addConfigurator);
     }
     /**
      * @description adds role object

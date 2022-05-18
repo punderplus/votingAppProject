@@ -1,11 +1,7 @@
 <template>
     <lightning-card title={listName}>
-        <template if:true={users}>
-            <lightning-datatable key-field="Id" data={users} columns={columns} hide-checkbox-column="true">
-            </lightning-datatable>
-        </template>
         <template if:true={editable}>
-            <lightning-button label="Edit" title="Non-primary action" onclick={openEdit}>
+            <lightning-button label="Edit" title="Non-primary action" onclick={openEdit} class="myButton">
             </lightning-button>
             <template if:true={isEditOpen}>
                 <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
@@ -35,6 +31,10 @@
                 </section>
                 <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
             </template>
+        </template>
+        <template if:true={users}>
+            <lightning-datatable key-field="Id" data={users} columns={columns} hide-checkbox-column="true">
+            </lightning-datatable>
         </template>
     </lightning-card>
 </template>
