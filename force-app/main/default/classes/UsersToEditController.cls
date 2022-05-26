@@ -45,6 +45,16 @@ public class UsersToEditController {
      */ 
     @AuraEnabled(cacheable=true)
     public static List<Voting_Campaign_Role__c> getCurrentUsers(ID cmpId, String recordTp) {
+        System.debug([
+            SELECT User__r.Name
+            FROM Voting_Campaign_Role__c
+            WHERE Voting_Compaign__r.Id = :cmpId
+            AND RecordTypeId IN
+                (SELECT Id 
+                    FROM RecordType 
+                    WHERE sObjectType = 'Voting_Campaign_Role__c' 
+                    AND DeveloperName IN (:recordTp))
+        ]);
         return [
             SELECT User__r.Name
             FROM Voting_Campaign_Role__c

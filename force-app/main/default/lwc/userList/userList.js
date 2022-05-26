@@ -3,6 +3,7 @@ import getUsers from '@salesforce/apex/CampaignController.getUsers';
 import getAllAvailableUsers from '@salesforce/apex/UsersToEditController.getAllAvailableUsers';
 import getCurrentUsers from '@salesforce/apex/UsersToEditController.getCurrentUsers';
 import insertUsers from '@salesforce/apex/UsersToEditController.insertUsers';
+import { subscribe } from 'lightning/messageService';
 
 //columns for the table
 const COLUMNS = [
@@ -38,6 +39,8 @@ export default class ModeratorsList extends LightningElement {
     listName;
     //recordType name
     recordTp;
+
+    //
     connectedCallback() {
         getUsers({ cmpId: this.recordId, lim: 10, userType: this.componentLabel }).then(response => {
             //different table lable for different componentLabel arguement
@@ -66,6 +69,19 @@ export default class ModeratorsList extends LightningElement {
             console.log('Error: ' + error);
         });
     }
+
+    /*channelName = '/event/Observe_List_Of_Users__e';
+    isSubscribeDisabled = false;
+    isUnsubscribeDisabled = !this.isSubscribeDisabled;
+    subscribtion = {};
+    handleSubscribe() {
+        subscribe(this.channelName, -1, this.messageCallback).then(response => {
+            console.log('Subscription request sent to: ', JSON.stringify(response.channel))
+            this.subscribtion = response;
+        })
+    }*/
+
+
     @track options = [];
     @track values = [];
     updatedValues;
@@ -112,20 +128,13 @@ export default class ModeratorsList extends LightningElement {
         //handling inserted/deleted users in database
         insertUsers({ cmpId: this.recordId, recordTp: this.recordTp, oldIds: this.values, newIds: this.updatedValues })
             .then(() => {
-                getUsers({ cmpId: this.recordId, lim: 5, userType: this.componentLabel })
-                    .then(response => {
-                        this.users = response;
-                        this.users.forEach(item => {
-                            item.UserURL = '/' + item.Id;
-                        });
-                    }).catch(error => {
-                        console.log('Error: ' + error);
-                    });
+                console.log('Ok');
             }
             ).catch(error => {
                 console.log(error);
             }
             );
+        //subscribe(this.channelName, -1, getUsers({ cmpId: this.recordId, lim: 10, userType: this.componentLabel })).then(response => );
         //close dual box
         this.isEditOpen = false;
     }

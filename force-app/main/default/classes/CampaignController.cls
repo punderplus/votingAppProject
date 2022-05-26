@@ -10,6 +10,7 @@ public with sharing class CampaignController {
     @AuraEnabled
     public static List<User> getUsers(ID cmpId, Integer lim, String userType) {
         Voting_Campaign__c vc = [SELECT ID, Voting_Campaign_Number__c FROM Voting_Campaign__c WHERE ID = :cmpId LIMIT 1];
+        System.debug(vc);
         String filter = '%' + vc.Voting_Campaign_Number__c + '-' + userType;
         Set<ID> groupsId = (new Map<ID, SObject>([SELECT Id FROM Group WHERE Name LIKE :filter]).keySet());
         return [

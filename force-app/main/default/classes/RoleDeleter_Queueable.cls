@@ -33,5 +33,6 @@ public with sharing class RoleDeleter_Queueable implements Queueable{
         List<GroupMember> gmsToDelete = [SELECT GroupId, UserOrGroupId FROM GroupMember WHERE GroupId = :cmpGroup.ID AND UserOrGroupId IN :gmIds];
         //System.debug(gms);
         delete gmsToDelete;
+        System.enqueueJob(new CampaignDeleteSharing_Queueable(oldRoles));
     }
 }
